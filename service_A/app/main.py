@@ -1,24 +1,24 @@
 import requests
 import wave
-from fastapi import FastAPI
-
-app = FastAPI()
+from flask import Flask, request, jsonify
 
 
-@app.post("/process_audio")
-async def process_audio():
+app = Flask(__name__)
+
+
+@app.route('/process_audio', methods=['POST'])
+def process_audio():
     frames = split_audio_frames("app/assignment_audio.wav", chunk_size=20)
     results = []
-    headers = {'Content-Type': 'application/octet-stream'}
 
     for frame in frames:
         response = requests.post(
-            "http://localhost:6000/process_frame", data=frame, headers=headers)
-        print("res", response.json())
+            "http://localhost:6000/process_frame", data=frame)
+        print("res", response.content)
         if response.ok:
             results.append(response.json())
 
-    return results
+    return jsonify(results)
 
 
 def split_audio_frames(file_path, chunk_size):
@@ -37,3 +37,7 @@ def split_audio_frames(file_path, chunk_size):
             chunks.append(chunk_data)
 
     return chunks
+
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=4000)

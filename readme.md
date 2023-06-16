@@ -16,9 +16,9 @@ Process-2: Virtualenv
 1) create a virtualenv outside of the project: virtualenv venv
 2) activate it: venv/bin/activate
 3) cd serice_A & run: pip install -r service_A/requirements.txt
-4) run: uvicorn app.main:app --host 0.0.0.0 --port 4000
+4) run: python app/main.py
 4) cd serice_B & run: pip install -r service_B/requirements.txt
-5) run: uvicorn app.main:app --host 0.0.0.0 --port 6000
+5) run: python app/main.py
 
 
 ## API's:

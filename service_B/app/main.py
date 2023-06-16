@@ -1,22 +1,22 @@
 import webrtcvad
-
-from fastapi import FastAPI, Request
+from flask import Flask, request, jsonify
 from pydantic import BaseModel
 
-app = FastAPI()
+
+app = Flask(__name__)
 
 
 class Frame(BaseModel):
     data: bytes
 
 
-@app.post("/process_frame")
-def process_frame(request: Request):
-    frame: Frame = request.body()
+@app.route('/process_frame', methods=['POST'])
+def process_frame():
+    frame = request.data
 
-    # Validate frame size and bytearray
-    if not isinstance(frame, bytearray):
-        return {"error": "Invalid frame size or bytearray"}
+    # Validate frame size and bytes
+    if not isinstance(frame, bytes):
+        return jsonify({"error": "Invalid frame size or bytes"})
 
     # Assuming speech ends after 500ms
     chunk_size = 500
@@ -29,9 +29,9 @@ def process_frame(request: Request):
         speech_ended = check_speech_ended(accumulated_frames)
         if speech_ended:
             accumulated_frames = []
-            return {"result": True}
+            return jsonify({"result": True})
 
-    return {"result": False}
+    return jsonify({"result": False})
 
 
 def check_speech_ended(accumulated_frames):
@@ -64,3 +64,7 @@ def check_speech_ended(accumulated_frames):
             accumulated_frames = []
 
     return speech_ended
+
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=6000)
