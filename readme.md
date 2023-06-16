@@ -5,7 +5,11 @@ Process-1: Docker
 2) run: make run
 3) cd assignment_project/service_B
 4) run: make run
-N.B: Running both serives well but had an network issue to call service_B
+
+N.B: Can globally run both services using command: make run
+Can stop/clear all the running containers using: make clear
+Make sure you're in the project root folder(assignment_project/)
+Running both serives well but had an network issue to call service_B API
 
 
 Process-2: Virtualenv
