@@ -47,8 +47,8 @@ def check_speech_ended(accumulated_frames):
     frames_per_chunk = int(chunk_duration / frame_duration)
 
     speech_ended = False
-    for i in range(0, len(waveform), frame_duration):
-        frame = waveform[i:i+frame_duration]
+    for duration in range(0, len(waveform), frame_duration):
+        frame = waveform[duration: duration+frame_duration]
         is_speech = vad.is_speech(frame, sample_rate=16000)
 
         if is_speech:
